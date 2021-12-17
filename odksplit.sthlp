@@ -56,6 +56,7 @@ However, {cmd:odksplit} does this again deleting the existing variables. {cmd:od
 {pstd}
 This program will clear any data in memory. Therefore, the program asks whether you really want to clear data from memory. Write ok in the command line and press enter if you want to proceed.
 Otherwise, write cancel, and press enter to cancel the program. This will not work if the variable names include the group names as prefix.
+{p_end}
 
 {marker options}{...}
 {title:Options}
