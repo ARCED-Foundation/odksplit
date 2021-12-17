@@ -44,7 +44,10 @@ If ODK or SurveyCTO is used for data collection, the multiple response variables
 
 {pstd}
 If "SurveyCTO sync" is used to download data, and the 'Export select_multiple responses as series of 1/0 columns?' option was ticked, the dummy variables are already created in the dataset.
-However, {cmd:odksplit} does this again deleting the existing variables. {cmd:odksplit} uses the XLSform to identify the 'select_multiple' variables, and take the value labels from the choices sheet. {cmd:odksplit} was initially developed to work with the multiple response variables, however, additional options were added based on user feedback.
+However, {cmd:odksplit} does this again deleting the existing variables. {cmd:odksplit} uses the XLSform to identify the 'select_multiple' variables, and take the value labels from the choices sheet. 
+
+{pstd}
+{cmd:odksplit} was initially developed to work with the multiple response variables, however, additional options were added based on user feedback.
 
 
 {marker remarks}{...}
