@@ -8,11 +8,14 @@ This program will clear any data in memory. Therefore, the program asks whether 
 
 
 # Versions
-Current version: 2.1.0
-Available at SSC and on GitHub.
+Current version at <a href="https://www.stata.com/manuals/rssc.pdf" target="_blank">SSC</a>     : 2.1.0 <br>
+Current version at <a href="https://github.com/mehrabali/odksplit#installation" target="_blank">GitHub</a>   : 3.1.0 <br>
 
-First released on July 2019. Last updated Nov 2019.
+First released on July 2019. Last updated Dec 2021.
 
+## Change log
+### 3.1.0
+* ``odksplit`` now adds the full questions as notes to the variables. To view the full question instead of Stata label, write ``notes var``. To view full questions for all variables, write ``notes``
 
 # Installation
 
