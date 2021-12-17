@@ -31,18 +31,20 @@ First released on July 2019. Last updated Dec 2021.
 ## Syntax
 ```stata
 odksplit [, options]
+
+help odksplit
 ```
 
 ## Options
 | Options      | Description |
 | ---        |    ----   |
-| survey |  The name of the XLSform, including the path | 
-| data   |  The name of the data file, including the path |
-| label  |  The language specified in the label column in ODK XLSform. For example, if the label column is 'label:English', write English. Do not specify label if the column title is just 'label'. |
-| multiple | To split and label multiple responses |
-| single | To assign value label to single response variables |
-| varlabel | To label variables |
-| clear | To clear any data in memory |
+| <u>s</u>urvey |  The name of the XLSform, including the path | 
+| <u>d</u>ata   |  The name of the data file, including the path |
+| <u>l</u>abel  |  The language specified in the label column in ODK XLSform. For example, if the label column is 'label:English', write English. Do not specify label if the column title is just 'label'. |
+| <u>m</u>ultiple | To split and label multiple responses |
+| <u>sing</u>le | To assign value label to single response variables |
+| <u>var</u>label | To label variables |
+| <u>c</u>lear | To clear any data in memory |
 
 ## Example Syntax
 ```Stata
