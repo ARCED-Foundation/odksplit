@@ -60,6 +60,5 @@ odksplit [, options]
 Please report all bugs/feature request to the <a href="https://github.com/mehrabali/odksplit/issues" target="_blank"> github issues page</a>.
 
 ## Author
-Mehrab Ali
-
+Mehrab Ali <br>
 Email: mehrabbabu@gmail.com
