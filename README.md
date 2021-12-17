@@ -32,7 +32,6 @@ odksplit [, options]
 | Options      | Description |
 | ---        |    ----   |
 | survey |  The name of the XLSform, including the path | 
-| survey |  The name of the XLSform, including the path | 
 | data   |  The name of the data file, including the path |
 | label  |  The language specified in the label column in ODK XLSform. For example, if the label column is 'label:English', write English. Do not specify label if the column title is just 'label'. |
 | multiple | To split and label multiple responses |
