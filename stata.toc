@@ -1,0 +1,1 @@
+d A Stata module to label the variables, assign corresponding value labels, and split and label multiple response variables generated from ODK.
