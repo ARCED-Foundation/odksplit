@@ -15,7 +15,7 @@ First released on July 2019. Last updated Dec 2021.
 
 ## Change log
 ### 3.1.0
-* ``odksplit`` now adds the full questions as notes to the variables. To view the full question instead of Stata label, write ``notes var``. To view full questions for all variables, write ``notes``
+* ``odksplit`` now adds the full questions as notes to the variables. To view the full question instead of Stata label, write ``notes var``. To view full questions for all variables, write ``notes`` in the Stata command window.
 
 # Installation
 
