@@ -24,7 +24,7 @@ First released on July 2019. Last updated Dec 2021.
     ssc install odksplit
 
 ** Install from GitHub
-    net install odksplit, all replace from(https://raw.githubusercontent.com/mehrabali/odksplit/master)
+    net install odksplit, all replace from(https://raw.githubusercontent.com/ARCED-Foundation/odksplit/master)
 
 ```
 
