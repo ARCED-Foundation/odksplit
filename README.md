@@ -11,6 +11,8 @@ This program will clear any data in memory. Therefore, the program asks whether 
 Current version: 2.1.0
 Available at SSC and on GitHub.
 
+First released on July 2019. Last updated Nov 2019.
+
 
 # Installation
 
