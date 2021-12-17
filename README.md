@@ -64,7 +64,7 @@ help odksplit
 
 ```
 
-Please report all bugs/feature request to the <a href="https://github.com/mehrabali/odksplit/issues" target="_blank"> github issues page</a>.
+Please report all bugs/feature request to the <a href="https://github.com/ARCED-Foundation/odksplit/issues" target="_blank"> github issues page</a>.
 
 ## Author
 Mehrab Ali <br>
