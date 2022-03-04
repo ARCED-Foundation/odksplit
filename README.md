@@ -9,7 +9,7 @@ This program will clear any data in memory. Therefore, the program asks whether 
 
 # Versions
 Current version at <a href="https://www.stata.com/manuals/rssc.pdf" target="_blank">SSC</a>     : 2.1.0 <br>
-Current version at <a href="https://github.com/mehrabali/odksplit#installation" target="_blank">GitHub</a>   : 3.1.0 <br>
+Current version at <a href="https://github.com/mehrabali/odksplit#installation" target="_blank">GitHub</a>   : 3.2.0 <br>
 
 First released on July 2019. Last updated Mar 2022.
 
