@@ -11,11 +11,11 @@ This program will clear any data in memory. Therefore, the program asks whether 
 Current version at <a href="https://www.stata.com/manuals/rssc.pdf" target="_blank">SSC</a>     : 2.1.0 <br>
 Current version at <a href="https://github.com/mehrabali/odksplit#installation" target="_blank">GitHub</a>   : 3.1.0 <br>
 
-First released on July 2019. Last updated Dec 2021.
+First released on July 2019. Last updated Mar 2022.
 
 ## Change log
-### 3.1.0
-* ``odksplit`` now adds the full questions as notes to the variables. To view the full question instead of Stata label, write ``notes varname``. To view full questions for all variables, write ``notes`` in the Stata command window.
+### 3.2.0
+* ``odksplit`` now adds the full questions as notes to the variables. To view the full question instead of Stata label, write ``notes varname``. To view full questions for all variables, write ``notes`` in the Stata command window. It also works with wide data.
 
 # Installation
 
@@ -24,7 +24,7 @@ First released on July 2019. Last updated Dec 2021.
     ssc install odksplit
 
 ** Install from GitHub
-    net install odksplit, all replace from(https://raw.githubusercontent.com/ARCED-Foundation/odksplit/master)
+    net install odksplit, all replace from(https://raw.githubusercontent.com/ARCED-Foundation/odksplit/wide)
 
 ```
 
@@ -44,6 +44,8 @@ help odksplit
 | <u>m</u>ultiple | To split and label multiple responses |
 | <u>sing</u>le | To assign value label to single response variables |
 | <u>var</u>label | To label variables |
+| <u>w</u>ide | Specify if data is in wide format |
+| <u>L</u>ong | Specify if data is in long format |
 | <u>c</u>lear | To clear any data in memory |
 
 ## Example Syntax
@@ -51,7 +53,7 @@ help odksplit
 
     odksplit,   survey("X:\Projects 2018\Fieldwork\Tools\SurveyCTO files\Phase one_v1.xlsx") ///
                 data("X:\Projects 2017\Fieldwork\Data\Data\raw\Phase one data.dta") ///
-                label(English) multiple single varlabel clear
+                label(English) multiple single varlabel clear wide
 
     odksplit,   s("X:\Projects 2018\Fieldwork\Tools\SurveyCTO files\Phase one_v1.xlsx") ///
                 d("X:\Projects 2017\Fieldwork\Data\Data\raw\Phase one data.dta") multiple clear
