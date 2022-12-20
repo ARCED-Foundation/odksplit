@@ -30,7 +30,7 @@ version 13
 	}
 
 	* If no language, use the label column
-	else if ("`label'" != "") {
+	else if ("`label'" == "") {
 		local newlabel  "label"
 	}
 
