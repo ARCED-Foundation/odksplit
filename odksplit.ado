@@ -25,7 +25,7 @@ version 9
 
 
 	
-
+qui {
 **# Survey sheet
 *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*	
 
@@ -283,5 +283,5 @@ version 9
 	
 	if !mi(`save') save using "`save'", replace
 
-
+}
 end
