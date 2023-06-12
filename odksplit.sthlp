@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 2.0.0  22jan2019}{...}
+{* *! version 4.0.0  22jan2019}{...}
 {findalias asfradohelp}{...}
 {vieweralsosee "" "--"}{...}
 {vieweralsosee "[R] help" "help help"}{...}
@@ -11,7 +11,7 @@
 {title:Title}
 
 {phang}
-{bf:odksplit} {hline 2} is a module to label the variables, assign corresponding value labels, and split and label multiple response variables generated from ODK.
+{bf:odksplit} {hline 2} is a module to label the variables, assign corresponding value labels, and split and label multiple response variables generated from ODK. {bf:odksplit} labels the dataset in all available languages.
 
 {marker syntax}{...}
 {title:Syntax}
@@ -26,11 +26,9 @@
 {syntab:Main}
 {synopt:{opt s:urvey}}The name of the XLSform, including the path{p_end}
 {synopt:{opt d:ata}}The name of the data file, including the path{p_end}
-{synopt:{opt l:abel}}The language specified in the label column in ODK XLSform. For example, if the label column is 'label:English', write English. Do not specify label if the column title is just 'label'. {p_end}
-{synopt:{opt m:ultiple}}To split and label multiple responses{p_end}
-{synopt:{opt sing:le}}To assign value label to single response variables{p_end}
-{synopt:{opt var:label}}To label variables{p_end}
+{synopt:{opt l:abel}}The language specified in the label column in ODK XLSform. For example, if the label column is 'label:English', write English. If 'label' is specified, default language is set. {p_end}
 {synopt:{opt c:lear}}To clear any data in memory{p_end}
+{synopt:{opt save}}To save the labelled data {p_end}
 {synoptline}
 {p2colreset}{...}
 
@@ -70,30 +68,20 @@ Otherwise, write cancel, and press enter to cancel the program. This will not wo
 {opt data} specifies the data file 
 
 {phang}
-{opt label} The language specified in the label column in ODK XLSform. For example, if the label column is 'label:English', write English.  Do not specify label if the column title is just 'label'. 
-
-{phang}
-{opt multiple} splits and labels the multiple responses.
-
-{phang}
-{opt single} assigns value labels to the single response variables.
-
-{phang}
-{opt varlabel} assigns variable labels.
+{opt label} The language specified in the label column in ODK XLSform. For example, if the label column is 'label:English', write English.  If 'label' is specified, default language is set.. 
 
 {phang}
 {opt clear} clear any data from memory
 
+{phang}
+{opt save} save the labelled data
+
 {marker examples}{...}
 {title:Examples}
 
-{phang}{cmd:. odksplit, survey("X:\Projects 2018\Fieldwork\Tools\SurveyCTO files\Phase one_v1.xlsx") data("X:\Projects 2017\Fieldwork\Data\Data\raw\Phase one data.dta") label(English) multiple single varlabel clear}{p_end}
+{phang}{cmd:. odksplit, survey("X:\Projects 2018\Fieldwork\Tools\SurveyCTO files\Phase one_v1.xlsx") data("X:\Projects 2017\Fieldwork\Data\Data\raw\Phase one data.dta") label(English) clear save("X:\Projects 2017\Fieldwork\Data\Data\raw\Phase one data_labelled.dta")}{p_end}
 
-{phang}{cmd:. odksplit, s("X:\Projects 2018\Fieldwork\Tools\SurveyCTO files\Phase one_v1.xlsx") d("X:\Projects 2017\Fieldwork\Data\Data\raw\Phase one data.dta") multiple clear}{p_end}
 
-{phang}{cmd:. odksplit, s("X:\Projects 2018\Fieldwork\Tools\SurveyCTO files\Phase one_v1.xlsx") d("X:\Projects 2017\Fieldwork\Data\Data\raw\Phase one data.dta") single clear}{p_end}
-
-{phang}{cmd:. odksplit, s("X:\Projects 2018\Fieldwork\Tools\SurveyCTO files\Phase one_v1.xlsx") d("X:\Projects 2017\Fieldwork\Data\Data\raw\Phase one data.dta") var}{p_end}
 
 
 {marker author}{...}

@@ -1,4 +1,4 @@
-*! version 4.0.0 Mehrab Ali 07jun2023
+*! version 4.0.0 Mehrab Ali 12jun2023
 
 
 cap program drop odksplit
@@ -29,7 +29,7 @@ version 9
 **# Survey sheet
 *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*	
 
-	import excel using "`survey'", sheet("survey") firstrow clear all
+	import excel using "`survey'", sheet("survey") firstrow  all `clear'
 	drop if mi(type)
 	cap rename value name
 	gen choicename = word(type, 2) if regexm(type, "select_")
