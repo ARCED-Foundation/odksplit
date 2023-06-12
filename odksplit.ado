@@ -4,7 +4,7 @@
 cap program drop odksplit
 program  odksplit
 
-version 13
+version 9
 	
 
 *  ----------------------------------------------------------------------------
