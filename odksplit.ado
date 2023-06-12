@@ -1,4 +1,4 @@
-*! version 3.1.0 Mehrab Ali 17dec2021
+*! version 4.0.0 Mehrab Ali 07jun2023
 
 
 cap program drop odksplit
@@ -17,257 +17,271 @@ version 13
 	Data(string)
 	[Label(string)]
 	[Clear]
-	[Multiple]
-	[SINGle]
-	[VARlabel]
+	[save(string)]
+
 	
 	;
 	#d cr
 
-* Confirm the language	
-	if ("`label'" != "") {
-		local newlabel  label`label'
-	}
 
-	* If no language, use the label column
-	else if ("`label'" == "") {
-		local newlabel  "label"
-	}
-
-* Make sure data is saved or cleaned
-	if ("`clear'" == "")  {
-		di as err "Data in memory will be lost. Enter 'ok' if you want to continue. Enter 'cancel' otherwise", _request(_per)
-
-		if regexm(lower( "`per'"), "cancel") !=1 & regexm(lower( "`per'"), "ok") !=1  {  
-			di as err "What's wrong with paying attention???!!! ಠ益ಠ  "_newline(4)
-			di as err "Say OK or CANCEL ಠ益ಠ  ", _request(_per)
-			if regexm(lower( "`per'"), "cancel") !=1 & regexm(lower( "`per'"), "ok") !=1  {  
-				di as err "You are hopeless!!! Goodbye. ಠ益ಠ  "
-			}
-		}
-	}
-
-* Start processing 
-	if regexm(lower( "`per'"), "ok") ==1 | ("`clear'" != "") {		
-		di "This might take few moments. Please wait... (☉.☉)"
-
-		* Open dataset
-		u "`data'", clear
-
-		* Split and add labels to multiple response variables 
-		if  ("`multiple'"!="") {
-			di as input "Starting labeling select_multiple variables"
-			
-			qui {
-
-				preserve
-					import excel using "`survey'", sheet("survey") firstrow clear all
-					cap rename value name
-					drop if type==""
-					keep type name
-					gen typem=1 if regexm(type, "select_multiple")==1
-					keep if typem==1
-					split type
-
-					levelsof name, local(mvars) clean
-
-					tempfile surveysheet
-					save `surveysheet'
-
-					import excel using "`survey'", sheet("choices") firstrow clear all
-					cap rename name value
-					rename list_name type2
-					drop if type2==""
-					keep type2 value `newlabel'
-
-					tempfile choicesheet
-					save `choicesheet'
-				restore
-
-				foreach x of local  mvars {
-					cap confirm variable `x'
-					
-					if !_rc {
-						n di as result  "Working on variable - `x'"
-						tostring `x', replace
-
-						preserve
-							u `surveysheet', clear
-							levelsof type2 if name=="`x'", local(`x'_y) clean
-							
-							u `choicesheet', clear
-							levelsof value if type2=="``x'_y'", local(`x'_ch) clean
-						restore
-
-						cap tostring `x', replace
-						count if `x'!=""
-						if `r(N)'==0 noi di "No observation for `x'"
-
-						if `r(N)'>0 {
-
-							split  `x' if `x'!="", gen(`x't_) destring	
-									
-							foreach b of local `x'_ch {
-								local v = regexr("`b'", "-", "_")
-								cap drop `x'_`v'
-										
-								cap egen `x'_`v'=anymatch(`x't_*) if `x'!="", v(`b')
-								cap recode `x'_`v' (0=.) if `x'==""
-								
-								preserve
-								u `choicesheet', clear
-								cap levelsof `newlabel' if type2=="``x'_y'" & value=="`b'", local(`x'_`v'la) clean
-								restore 
-								cap label var `x'_`v' "``x'_`v'la'"
-								cap notes: `x'_`v': "``x'_`v'la'"
-							}
-								cap order `x'_*, after(`x') sequential
-								cap drop `x't_* 
-								
-						}
-					}
-
-					else {
-						n di as error "`x' does not exist"
-					}
-				}
-
-			}
-
-			n di as result "Completed splitting all variables "
-		}
-
-		* Add labels to Single response variables 
-		if  ("`single'"!="") {
-			n di as input "Starting labeling select_one variables"
-			
-			qui {
-				preserve
-					import excel using "`survey'", sheet("survey") firstrow clear all
-					cap rename value name
-					drop if type==""
-					keep type name
-					gen typem=1 if regexm(type, "select_one")==1
-					keep if typem==1
-					split type
-
-					levelsof name, local(mvars_sing) clean
-
-					tempfile surveysheet_sing
-					save `surveysheet_sing'
-
-					import excel using "`survey'", sheet("choices") firstrow clear all
-					cap rename  name value
-					rename list_name type2
-					drop if type2==""
-					keep type2 value `newlabel'
-
-					tempfile choicesheet_sing
-					save `choicesheet_sing'
-				restore
-
-				foreach z of local  mvars_sing {
-					cap confirm variable `z'
-					
-					if !_rc {
-						n di as result  "Working on variable - `z'"
-						
-						preserve
-							u `surveysheet_sing', clear
-							levelsof type2 if name=="`z'", local(`z'_y) clean
-							
-							u `choicesheet_sing', clear
-							levelsof value if type2=="``z'_y'", local(`z'_ch) clean
-						restore
-						
-										
-						foreach b of local `z'_ch {
-							local v = regexr("`b'", "-", "_")	
-							preserve
-							u `choicesheet_sing', clear
-							cap levelsof `newlabel' if type2=="``z'_y'" & value=="`b'", local(`z'_`v'la) clean
-							restore 
-							
-							cap label define `z' `b' "``z'_`v'la'", modify
-							
-							if _rc {
-								n di as error "`z' cannot be labeled"
-							}
-						}
-						cap la val `z' `z'				
-					}
-
-					else {
-					n di as error "`z' does not exist"
-					}				
-				}
-			}
-
-			n di as result "Completed labeling all value labels"
-		}
-
-		* Add variable labels
-		if  ("`varlabel'"!="") {
-
-			n di as input "Starting labeling variables"
-
-			qui {
-				preserve
-					import excel using "`survey'", sheet("survey") firstrow clear all
-					drop if type==""
-					keep type name `newlabel'
-					gen typem=1 if regexm(type, "begin group")!=1 & regexm(type, "end group")!=1 & regexm(type, "begin repeat")!=1 & regexm(type, "end repeat")!=1 & type!="note"
-					keep if typem==1
-					split type
-
-					levelsof name, local(mvars_lab) clean
-
-					tempfile surveysheet_lab
-					save `surveysheet_lab'
-
-				restore
-
-				foreach z of local  mvars_lab {
-					cap confirm variable `z'
-					
-					if !_rc {
-						n di as result  "Working on variable - `z'"
-						
-						preserve
-							u `surveysheet_lab', clear
-							levelsof `newlabel' if name=="`z'", local(`z'_y) clean
-						restore
-						
-						cap label var `z'  "``z'_y'"
-						cap notes `z': "``z'_y'"
-						
-						local `z'_l1 :	variable label `z'
-						
-						
-						if "``z'_l1'" =="" {
-							label var `z'  "`z'"
-							notes `z': "`z'"
-						}
-
-					}
-					
-					else {
-						n di as error "`z' does not exist"
-						}
-				}
-
-			}
-			n di as result "Completed labeling all variables"
-		}
-
-		if ("`multiple'"=="") & ("`single'"=="") & ("`varlabel'"=="") {
-			di as error "Please specify at least one of the options: multiple, single or varlabel"
-		}
-	}
-
-if regexm(lower( "`per'"), "cancel") ==1  {
-	di as err "{•̃_•̃} Save your data and run the program again"
-}
 	
+
+**# Survey sheet
+*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*	
+
+	import excel using "`survey'", sheet("survey") firstrow clear all
+	drop if mi(type)
+	cap rename value name
+	gen choicename = word(type, 2) if regexm(type, "select_")
+	
+	
+	* Find languages
+	loc x = 1
+	lookfor label
+	
+	loc _langlist = r(varlist)	
+	loc _lang_number = wordcount("`_langlist'")
+	
+	foreach var in `=r(varlist)' {
+		loc lang`x' `"`= subinstr("`var'", "label", "", .)'"'
+		
+		** Remove HTML tags 
+		replace `var' = ustrregexra(`var', "\<.*?\>" , "" ) if strpos(`var',"<")
+		loc ++x
+	}
+	
+	
+	
+	* If multiple variables exist
+	count if regexm(type, "select_multiple")==1
+	if r(N)>0 loc _runmultiple = 1
+	if `_runmultiple' levelsof name if regexm(type, "select_multiple"), 	local(mvars) clean
+	
+	* If single variables exist
+	count if regexm(type, "select_one")==1
+	if r(N)>0 loc _runsingle = 1
+
+	if `_runsingle' {
+		foreach var of loc singvars {
+			levelsof choicename if name=="`var'", loc(_c_`var')
+		}
+	}
+	
+	* All variable list for variable labeling 	
+	levelsof name if  !regexm(type, "begin group") & !regexm(type, "end group") ///
+					& !regexm(type, "begin repeat") & !regexm(type, "end repeat") ///
+					& type!="note", 	local(allvars) 	
+	
+	
+	* Construct variable labels 
+	foreach vars of loc allvars {
+		loc i=1
+		foreach language of loc _langlist {
+			qui levelsof `language' if name=="`vars'",  loc(`vars'L`i')
+			loc ++i
+		}
+	}
+	
+	
+	
+	
+	
+	tempfile _form 
+	save	`_form'
+	
+	
+	
+	
+**# Choices sheet 
+*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*
+	if `_runsingle' | `_runmultiple' {
+		import excel using "`survey'", sheet("choices") firstrow clear all
+		drop if mi(list_name)
+		cap ren name value
+		ren list_name choicename
+		
+		joinby choicename using `_form', unmatched(none) 
+		destring value, gen(newvalue) force
+		gsort choicename -value
+		
+		recode newvalue (else = .) if choicename==choicename[_n-1] & mi(newvalue[_n-1]) 
+		drop if !regex(type, "select") | mi(newvalue)
+		
+		
+		* Construct single value labels 	
+		forval i=1/`_lang_number' {
+			g lang_`i' = "lab def " + name + "_l`i' " + string(newvalue) + `" ""' + label`lang`i'' + `"", modify"'  if regexm(type, "select_one")
+			levelsof lang_`i', loc(lab`i') 
+			foreach lab of loc lab`i' {
+				`lab'
+			}
+		}
+		
+
+		* Select one variable list
+		levelsof name if regexm(type, "select_one"), local(singvars) clean
+		
+		
+		tempfile _choices
+		save	`_choices'
+		
+		tempfile labdo 
+		label save using `labdo'
+	}
+	
+	
+	if `_runmultiple' {
+		
+		foreach language of loc _langlist {
+			replace `language' = ustrregexra(`language', "\<.*?\>" , "" ) if strpos(`language',"<")
+			replace `language' = subinstr(`language', "\$" , "", .) 
+		}
+		
+		
+		g mvalue  = subinstr(value, "-", "_", .) if regexm(type, "select_multiple")
+		g mname = name + "_" + mvalue if regexm(type, "select_multiple")
+		levelsof mname if regexm(type, "select_multiple"), loc(mvarlist) clean 
+
+		* Construct multiple response labels 
+		foreach vars of loc mvarlist {
+			loc i=1
+			foreach language of loc _langlist {
+				qui levelsof `language' if mname=="`vars'",  loc(`vars'M`i')
+				di `"``vars'M`i''"'
+				loc ++i
+			}
+		}
+	}
+	
+	
+	
+**# Open dataset
+*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*
+
+	u "`data'", clear
+	
+	
+	forval i=1/`_lang_number' {
+		if `i'==1 lab lang `lang`i'', rename
+		else lab lang `lang`i'', copy new
+	}
+	
+	
+	* Add variable labels
+	n di as input "Starting labeling variables"
+
+	qui foreach vars of loc allvars {
+		
+		cap conf var `vars'
+		if !_rc loc allvarlist = "`vars'"
+		else cap unab allvarlist : `vars'_*	
+		if _rc n di as err "`vars' - not found"
+		else {
+			n di as result  "Labling variable - `vars'"
+			
+			foreach var of loc allvarlist {
+ 
+				if mi(`"`=real("subinstr("`subinstr("`var'", "`vars'_", "", .)'", "_", "", .)")'"') continue
+				forval i=1/`_lang_number' {
+					lab lang `lang`i''
+					
+					if !mi(`"``vars'L`i''"') lab var `var' 	``vars'L`i''
+					else  lab var `var' "`var'"
+					notes `var': 	``vars'L`i''	
+				}
+			}
+		}
+	}
+	
+	n di as result _n "Completed labeling all variables" _n
+	
+	
+	
+	* Add labels to Single response variables 
+	if `_runsingle' {
+		n di as input "Starting labeling select_one variables"
+		include `labdo'
+		
+		foreach vars of loc singvars {
+			
+			cap conf var `vars'
+			if !_rc loc allvarlist = "`vars'"
+			else cap unab allvarlist : `vars'_*	
+			if _rc n di as err "`vars' - not found"
+			else {
+				n di as result  "Labeling values - `vars'"
+				
+				foreach var of loc allvarlist {
+	 
+					if mi(`"`=real("subinstr("`subinstr("`var'", "`vars'_", "", .)'", "_", "", .)")'"') continue
+					forval i=1/`_lang_number' {
+						lab lang `lang`i''
+						cap lab val `var' `vars'_l`i'					
+					}
+				}
+			}
+		}
+			
+		n di as result "Completed labeling all value labels"
+		
+		
+		
+	}
+	
+	
+
+	
+	* Split and add labels to multiple response variables
+	if `_runmultiple' {
+		n di as input "Starting labeling select_multiple variables"
+		
+		qui foreach vars of loc mvarlist {
+		
+			cap conf var `vars'
+			if !_rc loc allvarlist = "`vars'"
+			else cap unab allvarlist : `vars'_*	
+			if _rc n di as err "`vars' - not found"
+			else {
+				n di as result  "Labling multiple response variable - `vars'"
+				
+				foreach var of loc allvarlist {
+					
+					loc mainvarname = subinstr("`var'", "_", "", .)
+					loc mainvalue	= subinstr("`var'", "`mainvarname'_", "", .)
+					cap gen `var' = regexm(`mainvarname', "`mainvalue'"), after(`mainvarname')
+					
+					if mi(`"`=real("subinstr("`subinstr("`var'", "`vars'_", "", .)'", "_", "", .)")'"') continue
+					forval i=1/`_lang_number' {
+						lab lang `lang`i''
+						di `"``vars'M`i''"'
+						if !mi(`"``vars'M`i''"') lab var `var' 	``vars'M`i''
+						else  lab var `var' "`var'"
+						notes `var': 	``vars'M`i''
+					}
+				}
+			}
+		}	
+		n di as result "Completed labeling multiple response variables"
+	}
+	
+	if mi("`label'") {
+		n di as result _n "The data is labelled in `_lang_number' language(s). Run below command lines to change language as you want." 
+		forval i=1/`_lang_number' {
+			n di as smcl `" {stata  lab lang `lang`i''}"'
+		}
+	}
+	
+	else {
+		n di as result _n "The data is labelled in `_lang_number' language(s). Run below command lines to change language as you want." 
+		forval i=1/`_lang_number' {
+			n di as smcl `"{stata  lab lang `lang`i''}"'
+			lab lang `label'
+			lab lang default, rename
+			n di as smcl "`label' is set as default label"
+		}
+	}
+	
+	if !mi(`save') save using "`save'", replace
+
 
 end
