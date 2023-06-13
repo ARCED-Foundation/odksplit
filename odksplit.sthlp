@@ -27,6 +27,7 @@
 {synopt:{opt s:urvey}}The name of the XLSform, including the path{p_end}
 {synopt:{opt d:ata}}The name of the data file, including the path{p_end}
 {synopt:{opt l:abel}}The language specified in the label column in ODK XLSform. For example, if the label column is 'label:English', write English. If 'label' is specified, default language is set. {p_end}
+{synopt:{opt date:format}}Specify the date format, either MDY or DMY {p_end}
 {synopt:{opt c:lear}}To clear any data in memory{p_end}
 {synopt:{opt save}}To save the labelled data {p_end}
 {synoptline}
@@ -71,6 +72,9 @@ Otherwise, write cancel, and press enter to cancel the program. This will not wo
 {opt label} The language specified in the label column in ODK XLSform. For example, if the label column is 'label:English', write English.  If 'label' is specified, default language is set.. 
 
 {phang}
+{opt dateformat} Specify the date format, either MDY or DMY
+
+{phang}
 {opt clear} clear any data from memory
 
 {phang}
@@ -79,7 +83,8 @@ Otherwise, write cancel, and press enter to cancel the program. This will not wo
 {marker examples}{...}
 {title:Examples}
 
-{phang}{cmd:. odksplit, survey("X:\Projects 2018\Fieldwork\Tools\SurveyCTO files\Phase one_v1.xlsx") data("X:\Projects 2017\Fieldwork\Data\Data\raw\Phase one data.dta") label(English) clear save("X:\Projects 2017\Fieldwork\Data\Data\raw\Phase one data_labelled.dta")}{p_end}
+{phang}{cmd:. odksplit, survey("X:\Projects 2018\Fieldwork\Tools\SurveyCTO files\Phase one_v1.xlsx") data("X:\Projects 2017\Fieldwork\Data\Data\raw\Phase one data.dta") label(English) dateformat(MDY) clear save("X:\Projects 2017\Fieldwork\Data\Data\raw\Phase one data_labelled.dta")}{p_end}
+{phang}{cmd:. odksplit, survey("X:\Projects 2018\Fieldwork\Tools\SurveyCTO files\Phase one_v1.xlsx") data("X:\Projects 2017\Fieldwork\Data\Data\raw\Phase one data.dta") clear save("X:\Projects 2017\Fieldwork\Data\Data\raw\Phase one data_labelled.dta")}{p_end}
 
 
 

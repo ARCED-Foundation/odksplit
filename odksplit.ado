@@ -18,6 +18,7 @@ version 9
 	[Label(string)]
 	[Clear]
 	[save(string)]
+	[DATEformat(string)]
 
 	
 	;
@@ -26,6 +27,17 @@ version 9
 
 	
 qui {
+	
+	loc dateformat = upper("`dateformat'")
+	
+	if mi("`dateformat'") & !inlist("`dateformat'", "MDY", "DMY") {
+		n di as err "option dateformat() incorrectly specified. Only MDY or DMY are acceptable."
+		ex 198
+	}
+	
+	if mi("`dateformat'") loc `dateformat' = "MDY"
+	
+	
 **# Survey sheet
 *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*	
 
@@ -34,6 +46,9 @@ qui {
 	cap rename value name
 	gen choicename = word(type, 2) if regexm(type, "select_")
 	
+	* List of date and datetime variables
+	levelsof name if inlist(type, "date"), loc(dates) clean
+	levelsof name if inlist(type, "datetime", "start", "end"), loc(datetimes) clean
 	
 	* Find languages
 	loc x = 1
@@ -280,6 +295,46 @@ qui {
 			n di as smcl "`label' is set as default label"
 		}
 	}
+	
+**# Change the formats of date and datetime variables
+
+	
+
+	if !mi("`dates'") {
+		foreach date of loc dates {
+			
+			cap confirm var `date'
+			
+			if !_rc {
+				count if mi(`date')
+				if `=r(N)'<`=_N' {
+					tempvar 	`date'_t
+					gen double 	``date'_t' = date(`date', "`dateformat'"), after(`date')
+					drop 		`date'
+					gen 		`date' = ``date'_t', after(``date'_t')
+					format 		`date' %td
+					drop  		``date'_t'
+				}
+			}			
+		}
+	}
+
+	loc datetimes =  `"`datetimes' submissiondate"'
+
+	foreach datetime of loc datetimes {
+		cap confirm var `datetime'
+		
+		if !_rc {
+			tempvar 	`datetime'_t
+			gen double 	``datetime'_t' = Clock(`datetime', "`dateformat'hms"), after(`datetime')
+			drop 		`datetime'
+			gen 		`datetime' = ``datetime'_t', after(``datetime'_t')
+			format 		`datetime' %tC	
+			drop  		``datetime'_t'
+		}
+	}
+
+	
 	
 	if !mi(`save') save using "`save'", replace
 
