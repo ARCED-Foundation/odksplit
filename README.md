@@ -63,6 +63,9 @@ help odksplit
                 data("X:\Projects 2017\Fieldwork\Data\Data\raw\Phase one data.dta") ///
                 save("X:\Projects 2017\Fieldwork\Data\Data\raw\Phase one data_labelled.dta") 
 
+    label language
+    label language English
+
 ```
 
 Please report all bugs/feature request to the <a href="https://github.com/ARCED-Foundation/odksplit/issues" target="_blank"> github issues page</a>.

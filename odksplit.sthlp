@@ -84,13 +84,22 @@ Otherwise, write cancel, and press enter to cancel the program. This will not wo
 {title:Examples}
 
 {phang}{cmd:. odksplit, survey("X:\Projects 2018\Fieldwork\Tools\SurveyCTO files\Phase one_v1.xlsx") data("X:\Projects 2017\Fieldwork\Data\Data\raw\Phase one data.dta") label(English) dateformat(MDY) clear save("X:\Projects 2017\Fieldwork\Data\Data\raw\Phase one data_labelled.dta")}{p_end}
+
 {phang}{cmd:. odksplit, survey("X:\Projects 2018\Fieldwork\Tools\SurveyCTO files\Phase one_v1.xlsx") data("X:\Projects 2017\Fieldwork\Data\Data\raw\Phase one data.dta") clear save("X:\Projects 2017\Fieldwork\Data\Data\raw\Phase one data_labelled.dta")}{p_end}
 
+{phang}{cmd:. label language }{p_end}
+{phang}{cmd:. label language English}{p_end}
 
 
+{title:Author} 
 
-{marker author}{...}
-{title:Author}
+{p 4 4 2}Mehrab Ali, ARCED Foundation{break}
+mehrabbabu@gmail.com
 
-{pstd}Mehrab Ali{p_end}
-{pstd}For questions or suggestions e-mail at mehrabbabu@gmail.com.{p_end}
+
+{title:Also see}
+
+{p 4 13 2}Manual:  {hi:[D] label}  
+
+{psee}Online:  {manhelp label D}, if installed
+{p_end}
