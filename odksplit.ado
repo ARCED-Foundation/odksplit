@@ -288,12 +288,10 @@ qui {
 	
 	else {
 		n di as result _n "The data is labelled in `_lang_number' language(s). Run below command lines to change language as you want." 
-		forval i=1/`_lang_number' {
-			n di as smcl `"{stata  lab lang `lang`i''}"'
-			lab lang `label'
-			lab lang default, rename
-			n di as smcl "`label' is set as default label"
-		}
+
+		lab lang `label'
+		lab lang default, rename
+		n di as smcl "`label' is set as default label"
 	}
 	
 **# Change the formats of date and datetime variables
@@ -336,7 +334,7 @@ qui {
 
 	
 	
-	if !mi(`save') save using "`save'", replace
+	if !mi("`save'") save  "`save'", replace
 
 }
 end
