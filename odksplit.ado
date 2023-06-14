@@ -69,13 +69,16 @@ qui {
 	
 	* If multiple variables exist
 	count if regexm(type, "select_multiple")==1
-	if r(N)>0 loc _runmultiple = 1
+	if r(N)>0 	loc _runmultiple = 1
+	else 		loc _runmultiple = 0
+	
 	if `_runmultiple' levelsof name if regexm(type, "select_multiple"), 	local(mvars) clean
 	
 	* If single variables exist
 	count if regexm(type, "select_one")==1
-	if r(N)>0 loc _runsingle = 1
-
+	if r(N)>0 	loc _runsingle = 1
+	else 		loc _runsingle = 0
+	
 	if `_runsingle' {
 		foreach var of loc singvars {
 			levelsof choicename if name=="`var'", loc(_c_`var')
