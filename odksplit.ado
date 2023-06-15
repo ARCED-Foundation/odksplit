@@ -132,7 +132,9 @@ qui {
 		
 		* Construct single value labels 	
 		forval i=1/`_lang_number' {
+			replace label`lang`i'' = subinstr(label`lang`i'', "`=char(13)'", " ", .)
 			replace label`lang`i'' = trim(itrim(label`lang`i''))
+			
 			g lang_`i' = "lab def " + name + "_l`i' " + string(newvalue) + `" ""' + label`lang`i'' + `"", modify"'  if regexm(type, "select_one")
 			levelsof lang_`i', loc(lab`i') 
 			foreach lab of loc lab`i' {
@@ -158,6 +160,7 @@ qui {
 		foreach language of loc _langlist {
 			replace `language' = ustrregexra(`language', "\<.*?\>" , "" ) if strpos(`language',"<")
 			replace `language' = subinstr(`language', "\$" , "", .) 
+			replace `language' = trim(itrim(`language'))
 		}
 		
 		
@@ -346,3 +349,5 @@ qui {
 
 }
 end
+
+
