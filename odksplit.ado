@@ -44,6 +44,8 @@ qui {
 	import excel using "`survey'", sheet("survey") firstrow  all `clear'
 	drop if mi(type)
 	cap rename value name
+	replace name = trim(itrim(name))
+	
 	gen choicename = word(type, 2) if regexm(type, "select_")
 	
 	* List of date and datetime variables
@@ -62,6 +64,7 @@ qui {
 		
 		** Remove HTML tags 
 		replace `var' = ustrregexra(`var', "\<.*?\>" , "" ) if strpos(`var',"<")
+		replace `var' = trim(itrim(`var'))
 		loc ++x
 	}
 	
@@ -119,6 +122,7 @@ qui {
 		ren list_name choicename
 		
 		joinby choicename using `_form', unmatched(none) 
+		replace value = trim(itrim(value))
 		destring value, gen(newvalue) force
 		gsort choicename -value
 		
@@ -128,6 +132,7 @@ qui {
 		
 		* Construct single value labels 	
 		forval i=1/`_lang_number' {
+			replace label`lang`i'' = trim(itrim(label`lang`i''))
 			g lang_`i' = "lab def " + name + "_l`i' " + string(newvalue) + `" ""' + label`lang`i'' + `"", modify"'  if regexm(type, "select_one")
 			levelsof lang_`i', loc(lab`i') 
 			foreach lab of loc lab`i' {
