@@ -186,11 +186,13 @@ qui {
 
 	u "`data'", clear
 	
-	
-	forval i=1/`_lang_number' {
-		if `i'==1 lab lang `lang`i'', rename
-		else lab lang `lang`i'', copy new
+	if `_lang_number' > 1 {
+		forval i=1/`_lang_number' {
+			if `i'==1 lab lang `lang`i'', rename
+			else lab lang `lang`i'', copy new
+		}
 	}
+	
 	
 	
 	* Add variable labels
@@ -290,19 +292,21 @@ qui {
 		n di as result "Completed labeling multiple response variables"
 	}
 	
-	if mi("`label'") {
-		n di as result _n "The data is labelled in `_lang_number' language(s). Run below command lines to change language as you want." 
-		forval i=1/`_lang_number' {
-			n di as smcl `" {stata  lab lang `lang`i''}"'
+	if `_lang_number' > 1 {	
+		if mi("`label'") {
+			n di as result _n "The data is labelled in `_lang_number' language(s). Run below command lines to change language as you want." 
+			forval i=1/`_lang_number' {
+				n di as smcl `" {stata  lab lang `lang`i''}"'
+			}
 		}
-	}
-	
-	else {
-		n di as result _n "The data is labelled in `_lang_number' language(s). Run below command lines to change language as you want." 
+		
+		else {
+			n di as result _n "The data is labelled in `_lang_number' language(s). Run below command lines to change language as you want." 
 
-		lab lang `label'
-		lab lang default, rename
-		n di as smcl "`label' is set as default label"
+			lab lang `label'
+			lab lang default, rename
+			n di as smcl "`label' is set as default label"
+		}
 	}
 	
 **# Change the formats of date and datetime variables
