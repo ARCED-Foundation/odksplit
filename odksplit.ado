@@ -212,7 +212,7 @@ qui {
  
 				if mi(`"`=real("subinstr("`subinstr("`var'", "`vars'_", "", .)'", "_", "", .)")'"') continue
 				forval i=1/`_lang_number' {
-					lab lang `lang`i''
+					cap lab lang `lang`i''
 					
 					if !mi(`"``vars'L`i''"') lab var `var' 	``vars'L`i''
 					else  lab var `var' "`var'"
@@ -244,7 +244,7 @@ qui {
 	 
 					if mi(`"`=real("subinstr("`subinstr("`var'", "`vars'_", "", .)'", "_", "", .)")'"') continue
 					forval i=1/`_lang_number' {
-						lab lang `lang`i''
+						cap lab lang `lang`i''
 						cap lab val `var' `vars'_l`i'					
 					}
 				}
@@ -281,7 +281,7 @@ qui {
 					
 					if mi(`"`=real("subinstr("`subinstr("`var'", "`vars'_", "", .)'", "_", "", .)")'"') continue
 					forval i=1/`_lang_number' {
-						lab lang `lang`i''
+						cap lab lang `lang`i''
 						di `"``vars'M`i''"'
 						if !mi(`"``vars'M`i''"') lab var `var' 	``vars'M`i''
 						else  lab var `var' "`var'"
