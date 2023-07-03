@@ -319,7 +319,7 @@ qui {
 			
 			cap confirm var `date'
 			
-			if !_rc {
+			if !_rc cap {
 				count if mi(`date')
 				if `=r(N)'<`=_N' {
 					tempvar 	`date'_t
@@ -338,7 +338,7 @@ qui {
 	foreach datetime of loc datetimes {
 		cap confirm var `datetime'
 		
-		if !_rc {
+		if !_rc cap {
 			tempvar 	`datetime'_t
 			gen double 	``datetime'_t' = Clock(`datetime', "`dateformat'hms"), after(`datetime')
 			drop 		`datetime'
