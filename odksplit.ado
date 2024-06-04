@@ -342,7 +342,7 @@ qui {
 			tempvar 	`datetime'_t
 			gen double 	``datetime'_t' = Clock(`datetime', "`dateformat'hms"), after(`datetime')
 			drop 		`datetime'
-			gen 		`datetime' = ``datetime'_t', after(``datetime'_t')
+			gen double		`datetime' = ``datetime'_t', after(``datetime'_t')
 			format 		`datetime' %tC	
 			drop  		``datetime'_t'
 		}
