@@ -343,7 +343,7 @@ qui {
 			gen double 	``datetime'_t' = Clock(`datetime', "`dateformat'hms"), after(`datetime')
 			drop 		`datetime'
 			gen double		`datetime' = ``datetime'_t', after(``datetime'_t')
-			format 		`datetime' %tC	
+			format 		`datetime' %tc	
 			drop  		``datetime'_t'
 		}
 	}

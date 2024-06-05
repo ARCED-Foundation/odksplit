@@ -1,4 +1,4 @@
-v 4.1.0
+v 4.1.1
 d 'ODKPLIT': is a Stata module to label the variables, assign corresponding 
 d value labels, and split and label multiple response variables generated from ODK.
 d odksplit labels the dataset in all available languages.
@@ -9,7 +9,7 @@ d KW: data collection
 d
 d Requires: Stata version 9
 d
-d Distribution-Date: 06jun2024
+d Distribution-Date: 07jun2024
 d
 d Author: Mehrab Ali, ARCED Foundation
 d Support: mehrabbabu@gmail.com
