@@ -1,4 +1,4 @@
-*! version 4.0.0 Mehrab Ali 17jun2023
+*! version 4.2.0 Mehrab Ali 29jun2024
 
 
 cap program drop odksplit
@@ -322,12 +322,22 @@ qui {
 			if !_rc cap {
 				count if mi(`date')
 				if `=r(N)'<`=_N' {
+					if strpos(`date', "+") > 0	{
+						loc _timeshit = substr(`date', strpos(`date', "T")+1, .) 
+						replace `date' = trim(substr(`date', 1, strpos(`date', "+") - 1)) 
+					}
+					if strpos(`date', "T") > 0	replace `date' = subinstr(`date', "T", "", .)
+					if strpos(`date', "Z") > 0	replace `date' = subinstr(`date', "Z", "", .)
+					
+					
 					tempvar 	`date'_t
 					gen double 	``date'_t' = date(`date', "`dateformat'"), after(`date')
 					drop 		`date'
-					gen 		`date' = ``date'_t', after(``date'_t')
+					gen double	`date' = ``date'_t', after(``date'_t')
 					format 		`date' %td
 					drop  		``date'_t'
+					
+					if !mi(`_timeshit') replace `date' = `date' + `_timeshit'*60*60*1000
 				}
 			}			
 		}
@@ -339,12 +349,23 @@ qui {
 		cap confirm var `datetime'
 		
 		if !_rc cap {
+			if strpos(`datetime', "+") > 0	{
+				loc _timeshit = substr(`datetime', strpos(`datetime', "+")+1, .) 
+				replace `datetime' = trim(substr(`datetime', 1, strpos(`datetime', "+") - 1)) 
+			}
+			if strpos(`datetime', "T") > 0	replace `datetime' = subinstr(`datetime', "T", "", .)
+			if strpos(`datetime', "Z") > 0	replace `datetime' = subinstr(`datetime', "Z", "", .)
+			
+			
 			tempvar 	`datetime'_t
 			gen double 	``datetime'_t' = Clock(`datetime', "`dateformat'hms"), after(`datetime')
 			drop 		`datetime'
 			gen double		`datetime' = ``datetime'_t', after(``datetime'_t')
+	
 			format 		`datetime' %tc	
 			drop  		``datetime'_t'
+			
+			
 		}
 	}
 
