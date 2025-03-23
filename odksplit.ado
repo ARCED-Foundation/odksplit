@@ -202,7 +202,6 @@ qui {
 					
 					cap g mname_`i'=""
 					replace mname_`i' = "`j'" if mname == "`match'"	
-					drop mname_`i' if missing(mname_`i')
 					loc ++i
 				}
 			}
