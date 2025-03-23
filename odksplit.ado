@@ -207,6 +207,7 @@ qui {
 			}
 		}	
 			g id = _n
+			set trace on 
 			reshape long mname_ , i(id) j(serial)
 			
 			replace mname = mname_ if !missing(mname_)  
