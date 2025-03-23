@@ -206,7 +206,7 @@ qui {
 
 			}
 			
-			g id = _n
+			cap g id = _n
 			qui reshape long mname_ , i(id) j(serial)
 			
 			qui replace mname = mname_ if !missing(mname_)  
