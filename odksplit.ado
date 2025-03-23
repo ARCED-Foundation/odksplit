@@ -37,7 +37,8 @@ qui {
 	
 	if mi("`dateformat'") loc `dateformat' = "MDY"
 	
-	
+	n di as text "Initiating testing............." 
+
 **# Survey sheet
 *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*	
 
@@ -453,6 +454,8 @@ qui {
 	
 	
 	if !mi("`save'") save  "`save'", replace
+	n di as result "Testing done............." 
+
 
 }
 end
