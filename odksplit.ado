@@ -203,11 +203,10 @@ qui {
 					replace mname_`i' = "`j'" if mname == "`match'"								
 					loc ++i
 				}
-
 			}
-			
-			cap g id = _n
-			cap qui reshape long mname_ , i(id) j(serial)
+		}	
+			g id = _n
+			qui reshape long mname_ , i(id) j(serial)
 			
 			qui replace mname = mname_ if !missing(mname_)  
 			
@@ -287,7 +286,7 @@ qui {
 		if !_rc loc allvarlist = "`vars'"
 		else cap unab allvarlist : `vars'_*	
 		if _rc n di as err "`vars' - not found"
-		else {
+		else{
 			n di as result  "Labling variable - `vars'"
 			
 			foreach var of loc allvarlist {
