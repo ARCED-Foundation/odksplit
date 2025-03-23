@@ -207,9 +207,9 @@ qui {
 			}
 		}	
 			g id = _n
-			qui reshape long mname_ , i(id) j(serial)
+			reshape long mname_ , i(id) j(serial)
 			
-			qui replace mname = mname_ if !missing(mname_)  
+			replace mname = mname_ if !missing(mname_)  
 			
 			qui levelsof mname, loc(mn)
 			
