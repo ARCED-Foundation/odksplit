@@ -201,7 +201,8 @@ qui {
 						local match ="`match1'"+"_`firstnum'"  
 					
 					cap g mname_`i'=""
-					replace mname_`i' = "`j'" if mname == "`match'"								
+					replace mname_`i' = "`j'" if mname == "`match'"	
+					drop mname_`i' if missing(mname_`i')
 					loc ++i
 				}
 			}
