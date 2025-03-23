@@ -168,6 +168,88 @@ qui {
 		g mvalue  = subinstr(value, "-", "_", .) if regexm(type, "select_multiple")
 		g mname = name + "_" + mvalue if regexm(type, "select_multiple")
 		levelsof mname if regexm(type, "select_multiple"), loc(mvarlist) clean 
+	
+	**correction
+	preserve 
+	
+		u "`data'", clear
+		qui ds 
+		local varlist = "`r(varlist)'"
+
+	restore 
+	
+		** crating mname list for sub-variables with labels
+		qui foreach m of local mvarlist{
+			loc i = 1
+			
+			** Analyzing all variables to find those that match the specific  combinations already created in the mnmae column.
+			qui foreach j of local varlist{  		 
+					
+					** If a match is found, it creates a new variable named i'mname` column.
+					**and the variable name is stored corresponding to the matching 
+					**sub-variable name that was generated in  mname` column.
+					
+					local match1 = regexr("`j'", "(_[0-9]+)+$", "") ///excluding numbers from variables
+					
+					
+					if regexm("`j'", "_[0-9]+") {
+						local firstnum = regexs(0)  
+						di "`firstnum'"
+						local firstnum = substr("`firstnum'", 2, .)  ///the first number stored
+						
+						local match ="`match1'"+"_`firstnum'"  
+					
+					cap g mname_`i'=""
+					replace mname_`i' = "`j'" if mname == "`match'"								
+					loc ++i
+				}
+
+			}
+			
+			g id = _n
+			qui reshape long mname_ , i(id) j(serial)
+			
+			qui replace mname = mname_ if !missing(mname_)  
+			
+			qui levelsof mname, loc(mn)
+			
+			** Exclude the main variables from the  column 
+			**to ensure there is no overlap while labeling multiple variables.
+			qui foreach j of local mn{
+					
+				** counting numbers that var has
+				local count = 0
+				qui forval p = 1/`=strlen("`j'")' {
+					local char = substr("`j'", `p', 1)
+								
+						qui if regexm("`char'", "[0-9]") {
+								local count = `count' + 1
+						}
+					}
+							
+					qui if `count'>=2{
+								
+						if regexm("`j'", "_[0-9]+") {
+							local firstnum = regexs(0)  
+							local firstnum = substr("`firstnum'", 2, .)  
+							local match1 = regexr("`j'", "(_[0-9]+)+$", "")
+
+									
+							local match ="`match1'"+"_`firstnum'"
+							n dis as result "`match'"
+														
+							replace mname = "" if mname == regexr("`j'","_[0-9]$", "")	
+
+							replace mname = "" if mname == "`match'"
+						}
+						
+					}
+				
+				}
+		
+		levelsof mname if regexm(type, "select_multiple"), loc(mvarlist) clean
+		
+		**correction ends here 
 
 		* Construct multiple response labels 
 		foreach vars of loc mvarlist {
