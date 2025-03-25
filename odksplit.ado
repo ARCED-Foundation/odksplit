@@ -297,7 +297,7 @@ qui {
 			else cap unab allvarlist : `vars'*
 			cap conf var `vars'
 			if _rc n di as err "`vars' - not found"
-			else {
+			
 				n di as result  "Labling multiple response variable - `vars'"
 				
 				foreach var of loc allvarlist {
@@ -315,7 +315,7 @@ qui {
 						notes `var': 	``vars'M`i''
 					}
 				}
-			}
+			
 		}	
 		n di as result "Completed labeling multiple response variables"
 	}
