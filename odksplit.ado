@@ -260,7 +260,7 @@ qui {
 	}
 	
 	
-	
+
 	* Split and add labels to multiple response variables
 	if `_runmultiple' {
 		n di as input "Starting labeling select_multiple variables"
@@ -294,7 +294,7 @@ qui {
 				}
 			}
 				
-			cap unab allvarlist : `vars'*
+			else cap unab allvarlist : `vars'*
 			cap conf var `vars'
 			if _rc n di as err "`vars' - not found"
 			else {
