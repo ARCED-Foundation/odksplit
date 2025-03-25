@@ -260,7 +260,6 @@ qui {
 	}
 	
 	
-
 	
 	* Split and add labels to multiple response variables
 	if `_runmultiple' {
@@ -269,15 +268,34 @@ qui {
 		qui foreach vars of loc mvarlist {
 		
 			cap ds `vars'_*	
-				if !_rc{
-					cap conf var `vars'
-					if !_rc & !regexm("`vars'", "`vars'") loc allvarlist = "`vars'"
-					else cap unab allvarlist : `vars'_*
-					
-				}	
-				else {
-						cap unab allvarlist : `vars'*
-				}	
+			if !_rc{
+				local varlist = "`r(varlist)'"
+				local max_numcount = 0
+				local allvarlist = ""
+
+				foreach var of local varlist {
+
+					local mvar =regexr("`var'", "(_[0-9]+)+$", "")
+					local num_part =subinstr("`var'","`mvar'","",1)
+					local numcount = length("`num_part'") - length(subinstr("`num_part'", "_", "", .))
+					if `numcount' > `max_numcount' {
+								local max_numcount = `numcount'
+					}
+				}
+
+				foreach var of local varlist {
+					local mvar =regexr("`var'", "(_[0-9]+)+$", "")
+					local num_part =subinstr("`var'","`mvar'","",1)
+					local numcount = length("`num_part'") - length(subinstr("`num_part'", "_", "", .))
+								
+					if `numcount' == `max_numcount' {
+							local allvarlist "`allvarlist' `var'" 
+					}
+				}
+			}
+				
+			cap unab allvarlist : `vars'*
+			cap conf var `vars'
 			if _rc n di as err "`vars' - not found"
 			else {
 				n di as result  "Labling multiple response variable - `vars'"
