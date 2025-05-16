@@ -12,7 +12,7 @@ Current version at <a href="https://github.com/mehrabali/odksplit#installation" 
 Current version at <a href="https://www.stata.com/manuals/rssc.pdf" target="_blank">SSC</a>     : 2.1.0 <br>
 
 
-First released on July 2019. Last updated June 2023.
+First released on July 2019. Last updated March 2025.
 
 ## Change log
 ### 4.3.0
