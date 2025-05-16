@@ -8,7 +8,7 @@ This program will clear any data in memory. Therefore, the program asks whether 
 
 
 # Versions
-Current version at <a href="https://github.com/mehrabali/odksplit#installation" target="_blank">GitHub</a>   : 4.0.0 <br>
+Current version at <a href="https://github.com/mehrabali/odksplit#installation" target="_blank">GitHub</a>   : 4.3.0 <br>
 Current version at <a href="https://www.stata.com/manuals/rssc.pdf" target="_blank">SSC</a>     : 2.1.0 <br>
 
 
