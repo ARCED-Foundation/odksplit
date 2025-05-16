@@ -32,7 +32,7 @@ First released on July 2019. Last updated March 2025.
     ssc install odksplit
 
 ** Install from GitHub
-    net install odksplit, all replace from(https://raw.githubusercontent.com/ARCED-Foundation/odksplit/correction-in-multiple-response)
+    net install odksplit, all replace from(https://raw.githubusercontent.com/ARCED-Foundation/odksplit/master)
 
 ```
 
