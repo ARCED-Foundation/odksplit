@@ -15,6 +15,10 @@ Current version at <a href="https://www.stata.com/manuals/rssc.pdf" target="_bla
 First released on July 2019. Last updated June 2023.
 
 ## Change log
+### 4.3.0
+* Fixed minor bug on labeling multiple response variables in repeat groups.
+
+
 ### 4.0.0
 * ``odksplit`` can label variables in repeat group. It also labels in multiple language. To see available languages write: ``label language``. To change language to English write ``label language English``. Tha language name is case sensitive. Use label() option of odksplit to make a specific language default. This version can also directly save the labelled dataset at specific location.
 
@@ -28,7 +32,7 @@ First released on July 2019. Last updated June 2023.
     ssc install odksplit
 
 ** Install from GitHub
-    net install odksplit, all replace from(https://raw.githubusercontent.com/ARCED-Foundation/odksplit/master)
+    net install odksplit, all replace from(https://raw.githubusercontent.com/ARCED-Foundation/odksplit/correction-in-multiple-response)
 
 ```
 

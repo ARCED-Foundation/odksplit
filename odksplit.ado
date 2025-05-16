@@ -37,7 +37,8 @@ qui {
 	
 	if mi("`dateformat'") loc `dateformat' = "MDY"
 	
-	
+	n di as text "Initiating testing............." 
+
 **# Survey sheet
 *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*	
 
@@ -168,6 +169,7 @@ qui {
 		g mvalue  = subinstr(value, "-", "_", .) if regexm(type, "select_multiple")
 		g mname = name + "_" + mvalue if regexm(type, "select_multiple")
 		levelsof mname if regexm(type, "select_multiple"), loc(mvarlist) clean 
+	
 
 		* Construct multiple response labels 
 		foreach vars of loc mvarlist {
@@ -205,7 +207,7 @@ qui {
 		if !_rc loc allvarlist = "`vars'"
 		else cap unab allvarlist : `vars'_*	
 		if _rc n di as err "`vars' - not found"
-		else {
+		else{
 			n di as result  "Labling variable - `vars'"
 			
 			foreach var of loc allvarlist {
@@ -259,18 +261,43 @@ qui {
 	
 	
 
-	
 	* Split and add labels to multiple response variables
 	if `_runmultiple' {
 		n di as input "Starting labeling select_multiple variables"
 		
 		qui foreach vars of loc mvarlist {
 		
+			cap ds `vars'_*	
+			if !_rc{
+				local varlist = "`r(varlist)'"
+				local max_numcount = 0
+				local allvarlist = ""
+
+				foreach var of local varlist {
+
+					local mvar =regexr("`var'", "(_[0-9]+)+$", "")
+					local num_part =subinstr("`var'","`mvar'","",1)
+					local numcount = length("`num_part'") - length(subinstr("`num_part'", "_", "", .))
+					if `numcount' > `max_numcount' {
+								local max_numcount = `numcount'
+					}
+				}
+
+				foreach var of local varlist {
+					local mvar =regexr("`var'", "(_[0-9]+)+$", "")
+					local num_part =subinstr("`var'","`mvar'","",1)
+					local numcount = length("`num_part'") - length(subinstr("`num_part'", "_", "", .))
+								
+					if `numcount' == `max_numcount' {
+							local allvarlist "`allvarlist' `var'" 
+					}
+				}
+			}
+				
+			else cap unab allvarlist : `vars'*
 			cap conf var `vars'
-			if !_rc loc allvarlist = "`vars'"
-			else cap unab allvarlist : `vars'_*	
 			if _rc n di as err "`vars' - not found"
-			else {
+			
 				n di as result  "Labling multiple response variable - `vars'"
 				
 				foreach var of loc allvarlist {
@@ -288,7 +315,7 @@ qui {
 						notes `var': 	``vars'M`i''
 					}
 				}
-			}
+			
 		}	
 		n di as result "Completed labeling multiple response variables"
 	}
@@ -372,6 +399,8 @@ qui {
 	
 	
 	if !mi("`save'") save  "`save'", replace
+	n di as result "Testing done............." 
+
 
 }
 end
